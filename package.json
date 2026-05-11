@@ -1,0 +1,15 @@
+{
+  "name": "queuecare-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "QueueCare clinic management — monorepo (backend + frontend)",
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "install:all": "npm install --workspace=backend && npm install --workspace=frontend"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
