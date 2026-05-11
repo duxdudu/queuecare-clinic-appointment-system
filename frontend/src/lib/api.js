@@ -1,11 +1,16 @@
 const API_URL = import.meta.env.VITE_API_URL
 
 export async function apiFetch(path, options = {}) {
+  // Use token from sessionStorage (works cross-origin on Netlify → Render)
+  const token = sessionStorage.getItem('token')
+
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      // Send token as Authorization header — cookie alone doesn't work cross-origin
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {})
     }
   })

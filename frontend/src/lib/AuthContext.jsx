@@ -7,24 +7,27 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Restore user from sessionStorage on page load
+    // Restore user + token from sessionStorage on page load
     try {
       const stored = sessionStorage.getItem('user')
       if (stored) setUser(JSON.parse(stored))
     } catch {
       sessionStorage.removeItem('user')
+      sessionStorage.removeItem('token')
     }
     setLoading(false)
   }, [])
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData)
     sessionStorage.setItem('user', JSON.stringify(userData))
+    if (token) sessionStorage.setItem('token', token)
   }
 
   const logout = () => {
     setUser(null)
     sessionStorage.removeItem('user')
+    sessionStorage.removeItem('token')
   }
 
   return (

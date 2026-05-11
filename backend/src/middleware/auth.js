@@ -3,7 +3,15 @@ import User from '../models/User.js'
 
 export async function authenticate(req, res, next) {
   try {
-    const token = req.cookies.token
+    // Accept token from cookie (local dev) OR Authorization header (production cross-origin)
+    let token = req.cookies.token
+
+    if (!token || token.trim() === '') {
+      const authHeader = req.headers.authorization
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.slice(7)
+      }
+    }
 
     if (!token || token.trim() === '') {
       return res.status(401).json({ error: 'Unauthorized' })
